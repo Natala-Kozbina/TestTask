@@ -1,0 +1,28 @@
+# Build
+/dist
+
+
+# Reports. Includes coverage and static analysis reports
+/reports
+
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+
+# Dependency directories
+node_modules
+
+
+# Git
+*.orig
+
+
+# Editors & IDE
+.idea
+
+
+# macOS
+.DS_Store
