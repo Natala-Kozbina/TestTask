@@ -3,14 +3,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Styled from 'styled-components';
 import Contacts from '../src/modules/Contacts/Contacts';
-import CallsHistory from '../src/modules/CallsHistory/CallsHistory';
+import Calls from '../src/modules/Calls/Calls';
 
 injectTapEventPlugin();
 
 const App = ({ children, className }) => (
   <div className={className} >
     <Contacts />
-    <CallsHistory />
+    <Calls />
     {children}
   </div>
 );

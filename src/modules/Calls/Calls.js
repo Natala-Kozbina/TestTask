@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Paginator from 'react-redux-paginator';
 import RaisedButton from 'material-ui/RaisedButton';
-import CallHistory from './Components/CallHistory';
+import CallHistory from './Components/Call';
 
-import ContentContainer from '../../Components/Content/ContentContainer';
 import ContentHeader from '../../Components/Content/ContentHeader';
 import List from '../../Components/List/List';
 
-import { fetchCallsHistory } from './CallsHistoryActions';
-import { getRelatedCallsHistory } from './CallsHistoryReducer';
-import { getSelectedContact } from '../Contacts/ContactsReducer';
+import { fetchCallsHistory } from './CallsActions';
+import { getRelatedCallsHistory } from './CallsReducer';
+import { getSelectedContact, getSelectedContactId } from '../Contacts/ContactsReducer';
 
 const mapStateToProps = state => ({
-  calls: getRelatedCallsHistory(state),
+  paginatorItems: getRelatedCallsHistory(state, getSelectedContactId(state)),
   selectedContact: getSelectedContact(state),
+  selectedContactId: getSelectedContactId(state),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -22,14 +23,32 @@ const mapDispatchToProps = dispatch => ({
 });
 
 @connect(mapStateToProps, mapDispatchToProps)
-class CallsHistory extends Component {
+@Paginator(
+  {
+    name: 'Calls',
+    collectionName: 'calls',
+    dynamicNameWith: 'selectedContactId',
+    itemsPerPage: 6,
+    isLooped: false,
+    shouldRenderIfEmpty: true,
+    initialPage: 1,
+  }
+)
+class Calls extends Component {
   static propTypes = {
     calls: PropTypes.arrayOf(
       PropTypes.shape({
         id: PropTypes.string.isRequired,
         started: PropTypes.string.isRequired,
-        recipientName: PropTypes.string.isRequired,
-        callerName: PropTypes.string.isRequired,
+        finished: PropTypes.string.isRequired,
+        recipient: PropTypes.shape({
+          name: PropTypes.string.isRequired,
+          phone: PropTypes.number.isRequired,
+        }).isRequired,
+        caller: PropTypes.shape({
+          name: PropTypes.string.isRequired,
+          phone: PropTypes.number.isRequired,
+        }).isRequired,
       }),
     ),
     selectedContact: PropTypes.shape({
@@ -37,6 +56,7 @@ class CallsHistory extends Component {
       id: PropTypes.string,
     }),
     fetchCalls: PropTypes.func.isRequired,
+    paginator: PropTypes.object,
   };
 
   static defaultProps = {
@@ -45,30 +65,30 @@ class CallsHistory extends Component {
     fetchCalls() {},
   };
 
-  fetchCallsHistory = () => {
+  fetchCalls = () => {
     const { fetchCalls, selectedContact: { id } } = this.props;
     fetchCalls(id);
   };
 
   render() {
-    const { calls, selectedContact } = this.props;
+    const { calls, selectedContact, paginator } = this.props;
     const title = selectedContact.id
       ? `Call history of ${selectedContact.name}`
       : 'Please select contact to view history of calls';
 
     return (
-      <ContentContainer>
+      <div>
         <ContentHeader>
           <div>{title}</div>
           <RaisedButton
             label="Fetch Contact history"
-            onTouchTap={this.fetchCallsHistory}
+            onTouchTap={this.fetchCalls}
             disabled={!selectedContact.id}
             primary
           />
         </ContentHeader>
         {calls.length ?
-          <List>
+          <List paginator={paginator}>
             {calls.map(c => (
               <CallHistory
                 title={title}
@@ -79,9 +99,9 @@ class CallsHistory extends Component {
           </List>
           : <div>There are no calls to show</div>
         }
-      </ContentContainer>
+      </div>
     );
   }
 }
 
-export default CallsHistory;
+export default Calls;

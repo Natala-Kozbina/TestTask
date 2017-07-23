@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Styled from 'styled-components';
 import TextField from 'material-ui/TextField';
 
-
-const style = { height: '70px' };
 const errorStyle = { color: '#B22222' };
 
-const TextInput = ({ hintText, input, type, meta: { touched, error } }) => {
+const TextInput = ({ hintText, input, type, meta: { touched, error }, className }) => {
   return (
-    <div style={style}>
+    <div className={className}>
       <TextField
         {...input}
         type={type}
@@ -23,7 +22,10 @@ const TextInput = ({ hintText, input, type, meta: { touched, error } }) => {
 
 TextInput.propTypes = {
   input: PropTypes.shape({
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
     name: PropTypes.string,
   }),
   hintText: PropTypes.string.isRequired,
@@ -32,6 +34,12 @@ TextInput.propTypes = {
     touched: PropTypes.string.bool,
     error: PropTypes.string,
   }),
+  className: PropTypes.string,
 };
 
-export default TextInput;
+export default Styled(TextInput)`
+  height: 70px !important;
+  label {
+    font-weight: 100;
+  }
+`;

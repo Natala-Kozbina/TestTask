@@ -15,7 +15,8 @@ Header.propTypes = {
 
 export default Styled(Header)`
   background-color: goldenrod;
-  height: 80px;
+  height: 120px;
+  width: 560px;
   padding: 20px;
     div:first-child {
       text-align: center;

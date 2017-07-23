@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux';
+import { paginatorReducer } from 'react-redux-paginator';
 import { reducer as formReducer } from 'redux-form';
 import { routerReducer } from 'react-router-redux';
 import ContactsReducer from '../src/modules/Contacts/ContactsReducer';
-import ModalReducer from '../src/modules/Modal/ModalReducer';
-import CallsHistoryReducer from '../src/modules/CallsHistory/CallsHistoryReducer';
+import CallsReducer from '../src/modules/Calls/CallsReducer';
 
 export default combineReducers({
   contacts: ContactsReducer,
-  calls: CallsHistoryReducer,
-  modal: ModalReducer,
+  calls: CallsReducer,
+  paginator: paginatorReducer,
   form: formReducer,
   routing: routerReducer,
 });

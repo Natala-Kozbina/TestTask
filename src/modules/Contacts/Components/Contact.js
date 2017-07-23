@@ -1,15 +1,7 @@
 import React from 'react';
-import Styled from 'styled-components';
 import PropTypes from 'prop-types';
 import ListItem from '../../../Components/List/ListItem';
 import Controls from '../../../Components/Controls/Controls';
-
-const Address = Styled.ul`
-  margin: 0;
-  div {
-   margin-left: 20px;
-  }
-`;
 
 const Contact = (props) => {
   const {
@@ -25,19 +17,37 @@ const Contact = (props) => {
 
   return (
     <ListItem
-      onTouchTap={handleClick}
-      color={isSelected ? 'skyblue !important' : 'initial !important'}
+      onClick={handleClick}
+      isSelected={isSelected}
     >
-      <div>Name: {`${name}`}</div>
-      <div>Age: {`${age}`}</div>
-      <div>Phone: {`${phone}`}</div>
-      <div>Address:</div>
-      <Address>
-        <li>Country: {`${country}`}</li>
-        <li>City: {`${city}`}</li>
-        <li>Street: {`${street}`}</li>
-        <li>Apt: {`${apt}`}</li>
-      </Address>
+      <div>
+        <span>Name: </span>
+        <span>{`${name}`}</span>
+      </div>
+      <div>
+        <span>Age: </span>
+        <span>{`${age}`}</span>
+      </div>
+      <div>
+        <span>Phone: </span>
+        <span>{`${phone}`}</span>
+      </div>
+      <div>
+        <span>Country: </span>
+        <span>{`${country}`}</span>
+      </div>
+      <div>
+        <span>City: </span>
+        <span>{`${city}`}</span>
+      </div>
+      <div>
+        <span>Street: </span>
+        <span>{`${street}`}</span>
+      </div>
+      <div>
+        <span>Apt: </span>
+        <span>{`${apt}`}</span>
+      </div>
       <Controls
         isVisible={isSelected}
         editLabel="Edit"
@@ -52,8 +62,8 @@ const Contact = (props) => {
 Contact.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  age: PropTypes.string.isRequired,
-  phone: PropTypes.string.isRequired,
+  age: PropTypes.number.isRequired,
+  phone: PropTypes.number.isRequired,
   country: PropTypes.string.isRequired,
   city: PropTypes.string.isRequired,
   street: PropTypes.string.isRequired,

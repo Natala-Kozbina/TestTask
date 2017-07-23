@@ -14,6 +14,7 @@ module.exports = {
   },
   "globals": {},
   "rules": {
+    "react/forbid-prop-types": 0,
     "comma-dangle": [1, "always-multiline"],
     "no-underscore-dangle": 0,
     "max-len": [1, 180, 4],

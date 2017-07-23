@@ -1,63 +1,39 @@
-import uuidV4 from 'uuid/v4';
+import faker from 'faker';
 
-export const FAKE_CONTACTS = [
-  {
-    id: uuidV4(),
-    name: 'John Dou',
-    age: '22',
-    phone: '1234567890',
-    country: 'Ukraine',
-    city: 'Dnipro',
-    street: 'Random',
-    apt: '4',
-  }, {
-    id: uuidV4(),
-    name: 'Alice Cooper',
-    age: '44',
-    phone: '1234567891',
-    country: 'Ukraine',
-    city: 'Dnipro',
-    street: 'Random',
-    apt: '1',
-  }, {
-    id: uuidV4(),
-    name: 'Heather K. Smith',
-    age: '33',
-    phone: '1234567892',
-    country: 'Ukraine',
-    city: 'Dnipro',
-    street: '4351 Goff Avenue',
-    apt: '1',
-  }, {
-    id: uuidV4(),
-    name: 'Kathryn N. Amaral',
-    age: '11',
-    phone: '1234567893',
-    country: 'Ukraine',
-    city: 'Dnipro',
-    street: 'Berkley',
-    apt: '1',
-  },
-];
+const ids = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
 
-export const FAKE_CALLS = [
-  {
-    id: uuidV4(),
-    started: '1318781876406',
-    duration: '2 minutes',
-    recipientName: 'James Dou',
-    callerName: 'John Dou',
-  }, {
-    id: uuidV4(),
-    started: '1418781276406',
-    duration: '2 minutes',
-    recipientName: 'James Dou',
-    callerName: 'John Dou',
-  }, {
-    id: uuidV4(),
-    started: '1398481876406',
-    duration: '5 minutes',
-    recipientName: 'James Dou',
-    callerName: 'John Dou',
-  },
-];
+export const FAKE_CONTACTS = [];
+export const FAKE_CALLS = [];
+
+ids.forEach((id) => {
+  const fakeUser = {
+    name: faker.fake('{{name.firstName}} {{name.lastName}}'),
+    phone: Number(`${1234567890 + Number(id)}`),
+  };
+
+  FAKE_CONTACTS.push({
+    id,
+    name: fakeUser.name,
+    age: 11,
+    phone: fakeUser.phone,
+    country: faker.fake('{{address.county}}'),
+    city: faker.fake('{{address.city}}'),
+    street: faker.fake('{{address.streetName}}'),
+    apt: 'some apt',
+  });
+  FAKE_CALLS.push({
+    started: faker.fake('{{date.future}}'),
+    finished: faker.fake('{{date.past}}'),
+    caller: {
+      name: fakeUser.name,
+      phone: fakeUser.phone,
+      id,
+    },
+    recipient: {
+      name: 'Timothy Dalton',
+      phone: 1111111111,
+      id: '12342',
+    },
+    id,
+  });
+});
