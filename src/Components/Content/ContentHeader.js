@@ -18,7 +18,7 @@ export default Styled(Header)`
   height: 120px;
   width: 560px;
   padding: 20px;
-    div:first-child {
+    >div:first-child {
       text-align: center;
       font-size: 20px;
       height: 50px;

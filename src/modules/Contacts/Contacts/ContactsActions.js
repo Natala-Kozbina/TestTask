@@ -1,7 +1,7 @@
 import uuidV4 from 'uuid/v4';
 import { push } from 'react-router-redux';
-import callApi from '../../utils/apiCaller';
-import { FAKE_CONTACTS } from '../../utils/fakeApiResponses';
+import callApi from '../../../utils/apiCaller';
+import { FAKE_CONTACTS } from '../../../utils/fakeApiResponses';
 
 export const ADD_MANY = 'CONTACTS/ADD_MANY';
 export const ADD_ONE = 'CONTACTS/ADD_ONE';

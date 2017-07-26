@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ListItem from '../../../Components/List/ListItem';
-import Controls from '../../../Components/Controls/Controls';
+import ListItem from '../../../../Components/List/ListItem';
+import Controls from '../../../../Components/Controls/Controls';
 
 const Contact = (props) => {
   const {
-    id, name, age,
+    id, openEditForm, name, age,
     country, city, phone,
     street, apt, isSelected,
-    select, goToEditState, removeContact,
+    select, removeContact,
   } = props;
 
   const handleClick = () => select(id);
-  const edit = () => goToEditState(id);
   const remove = () => removeContact(id);
+  const edit = () => openEditForm(id);
 
   return (
     <ListItem
@@ -70,14 +70,14 @@ Contact.propTypes = {
   apt: PropTypes.string.isRequired,
   isSelected: PropTypes.bool.isRequired,
   select: PropTypes.func.isRequired,
-  goToEditState: PropTypes.func.isRequired,
+  openEditForm: PropTypes.func.isRequired,
   removeContact: PropTypes.func.isRequired,
 };
 
 Contact.defaultProps = {
   isSelected: false,
   select() {},
-  goToEditState() {},
+  openEditForm() {},
   removeContact() {},
 };
 

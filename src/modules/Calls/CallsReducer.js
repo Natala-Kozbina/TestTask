@@ -1,5 +1,5 @@
 import { ADD_MANY } from './CallsActions';
-import { UPDATE as UPDATE_CONTACT } from '../Contacts/ContactsActions';
+import { UPDATE as UPDATE_CONTACT } from '../Contacts/Contacts/ContactsActions';
 
 const initialState = {
   data: [],

@@ -14,7 +14,7 @@ const Modal = (props) => {
       modal={false}
       open
       onRequestClose={close}
-      contentStyle={style}
+      contentStyle={props.style || style}
     >
       {children}
     </Dialog>
@@ -24,7 +24,14 @@ const Modal = (props) => {
 Modal.propTypes = {
   children: PropTypes.node.isRequired,
   close: PropTypes.func.isRequired,
+  style: PropTypes.objectOf(PropTypes.any),
 };
+
+Modal.defaultProps = {
+  close() {},
+  style: null,
+};
+
 
 export default Modal;
 

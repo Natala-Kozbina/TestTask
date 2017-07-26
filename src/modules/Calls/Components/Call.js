@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import ListItem from '../../../Components/List/ListItem';
 
-const CallHistory = ({ started, finished, recipient, caller }) => {
+const Call = ({ started, finished, recipient, caller }) => {
   const duration = moment(started).diff(moment(finished), 'minutes');
   return (
     <ListItem>
@@ -30,7 +30,7 @@ const CallHistory = ({ started, finished, recipient, caller }) => {
   );
 };
 
-CallHistory.propTypes = {
+Call.propTypes = {
   started: PropTypes.string.isRequired,
   finished: PropTypes.string.isRequired,
   recipient: PropTypes.shape({
@@ -43,5 +43,5 @@ CallHistory.propTypes = {
   }),
 };
 
-export default CallHistory;
+export default Call;
 

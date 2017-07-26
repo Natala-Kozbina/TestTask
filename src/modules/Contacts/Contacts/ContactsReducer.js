@@ -51,6 +51,7 @@ const ContactsReducer = (state = initialState, action) => {
 
 export const getContacts = state => state.contacts.data;
 export const getSelectedContactId = state => state.contacts.selectedId;
+export const getContactById = (state, id) => state.contacts.data.filter(c => c.id === id)[0];
 export const getSelectedContact = state => state.contacts.data.filter(c => c.id === state.contacts.selectedId)[0];
 
 export default ContactsReducer;

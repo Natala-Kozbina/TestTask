@@ -1,22 +1,22 @@
 import React from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
 import Styled from 'styled-components';
 import PropTypes from 'prop-types';
+
+import GenericButton from '../Buttons/GenericButton';
+import SecondaryButton from '../Buttons/SecondaryButton';
 
 const Controls = ({ editLabel, deleteLabel, edit, remove, className, isVisible }) => {
   return (
     <div className={className}>
       { isVisible &&
         <div>
-          <RaisedButton
+          <GenericButton
             label={editLabel}
-            primary
-            onTouchTap={edit}
+            handleClick={edit}
           />
-          <RaisedButton
+          <SecondaryButton
             label={deleteLabel}
-            secondary
-            onTouchTap={remove}
+            handleClick={remove}
           />
         </div>
       }
@@ -44,4 +44,7 @@ export default Styled(Controls)`
   margin-top: 10px;
   position: relative;
   bottom: 10px;
+  >div {
+    display: flex;
+  }
 `;

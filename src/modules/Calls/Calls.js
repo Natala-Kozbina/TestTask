@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Paginator from 'react-redux-paginator';
-import RaisedButton from 'material-ui/RaisedButton';
 import CallHistory from './Components/Call';
 
 import ContentHeader from '../../Components/Content/ContentHeader';
 import List from '../../Components/List/List';
+import GenericButton from '../../Components/Buttons/GenericButton';
 
 import { fetchCallsHistory } from './CallsActions';
 import { getRelatedCallsHistory } from './CallsReducer';
-import { getSelectedContact, getSelectedContactId } from '../Contacts/ContactsReducer';
+import { getSelectedContact, getSelectedContactId } from '../Contacts/Contacts/ContactsReducer';
 
 const mapStateToProps = state => ({
   paginatorItems: getRelatedCallsHistory(state, getSelectedContactId(state)),
@@ -18,22 +18,20 @@ const mapStateToProps = state => ({
   selectedContactId: getSelectedContactId(state),
 });
 
-const mapDispatchToProps = dispatch => ({
-  fetchCalls: id => dispatch(fetchCallsHistory(id)),
-});
+const mapDispatchToProps = {
+  fetchCalls: id => fetchCallsHistory(id),
+};
 
 @connect(mapStateToProps, mapDispatchToProps)
-@Paginator(
-  {
-    name: 'Calls',
-    collectionName: 'calls',
-    dynamicNameWith: 'selectedContactId',
-    itemsPerPage: 6,
-    isLooped: false,
-    shouldRenderIfEmpty: true,
-    initialPage: 1,
-  }
-)
+@Paginator({
+  name: 'Calls',
+  collectionName: 'calls',
+  dynamicNameWith: 'selectedContactId',
+  itemsPerPage: 6,
+  isLooped: false,
+  shouldRenderIfEmpty: true,
+  initialPage: 1,
+})
 class Calls extends Component {
   static propTypes = {
     calls: PropTypes.arrayOf(
@@ -80,11 +78,10 @@ class Calls extends Component {
       <div>
         <ContentHeader>
           <div>{title}</div>
-          <RaisedButton
+          <GenericButton
             label="Fetch Contact history"
-            onTouchTap={this.fetchCalls}
+            handleClick={this.fetchCalls}
             disabled={!selectedContact.id}
-            primary
           />
         </ContentHeader>
         {calls.length ?
