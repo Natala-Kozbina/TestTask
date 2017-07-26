@@ -1,7 +1,6 @@
-import uuidV4 from 'uuid/v4';
 import { push } from 'react-router-redux';
 import callApi from '../../../utils/apiCaller';
-import { FAKE_CONTACTS } from '../../../utils/fakeApiResponses';
+import { FAKE_CONTACTS } from '../../../utils/fakeApi';
 
 export const ADD_MANY = 'CONTACTS/ADD_MANY';
 export const ADD_ONE = 'CONTACTS/ADD_ONE';
@@ -27,46 +26,37 @@ export const fetchContacts = () => {
 
 export const createContact = (payload) => {
   return (dispatch) => {
-    return callApi('contacts', 'post', payload, {
-      fakeResponse: { ...payload, id: uuidV4(), phone: Number(payload.phone), age: Number(payload.age) },
-      isFake,
-      isJSON: true,
-    }).then((response) => {
-      if (!response.id) {
-        return dispatch(push('/error'));
-      }
-      return dispatch(addContact(response));
-    });
+    return callApi('contacts', 'post', payload)
+      .then((response) => {
+        if (!response.id) {
+          return dispatch(push('/error'));
+        }
+        return dispatch(addContact(response));
+      });
   };
 };
 
 export const editContact = (payload) => {
   return (dispatch) => {
-    return callApi(`contacts/${payload.id}`, 'put', payload, {
-      fakeResponse: { ...payload, phone: Number(payload.phone), age: Number(payload.age) },
-      isFake,
-      isJSON: true,
-    }).then((response) => {
-      if (!response.id) {
-        return dispatch(push('/error'));
-      }
-      return dispatch(updateContact(response));
-    });
+    return callApi(`contacts/${payload.id}`, 'put', payload)
+      .then((response) => {
+        if (!response.id) {
+          return dispatch(push('/error'));
+        }
+        return dispatch(updateContact(response));
+      });
   };
 };
 
 export const deleteContact = (id) => {
   return (dispatch) => {
-    return callApi(`contacts/${id}`, 'delete', null, {
-      fakeResponse: { id },
-      isFake,
-      isJSON: false,
-    }).then((response) => {
-      if (!response.id) {
-        return dispatch(push('/error'));
-      }
-      return dispatch(removeContact(response.id));
-    });
+    return callApi(`contacts/${id}`, 'delete')
+      .then((response) => {
+        if (!response.id) {
+          return dispatch(push('/error'));
+        }
+        return dispatch(removeContact(response.id));
+      });
   };
 };
 

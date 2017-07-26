@@ -66,7 +66,7 @@ class ContactsPage extends Component {
     openEditForm() {},
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchContacts();
   }
 

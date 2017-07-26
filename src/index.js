@@ -9,8 +9,8 @@ import DevTools from './dev-tools';
 import routes from './routes';
 
 const store = configureStore();
-const mountApp = document.getElementById('root');
 const history = syncHistoryWithStore(browserHistory, store);
+const mountApp = document.getElementById('root');
 
 render(
   <Provider store={store}>
