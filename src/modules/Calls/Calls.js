@@ -73,7 +73,6 @@ class Calls extends Component {
     const title = selectedContact.id
       ? `Call history of ${selectedContact.name}`
       : 'Please select contact to view history of calls';
-
     return (
       <div>
         <ContentHeader>

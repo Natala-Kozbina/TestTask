@@ -14,7 +14,6 @@ const Contact = (props) => {
   const handleClick = () => select(id);
   const remove = () => removeContact(id);
   const edit = () => openEditForm(id);
-
   return (
     <ListItem
       onClick={handleClick}

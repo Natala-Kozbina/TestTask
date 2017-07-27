@@ -5,35 +5,43 @@ const callsPerContact = 20;
 const FAKE_CONTACTS = [];
 const FAKE_CALLS = [];
 
-for (let i = 1; i <= contactsQuantity; i++) {
-  const fakeUser = {
-    name: faker.fake('{{name.firstName}} {{name.lastName}}'),
-    phone: Number(String(Math.random() * 10000000000).split('.')[0]),
-  };
+function getRandom(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
 
-  FAKE_CONTACTS.push({
-    id: String(i),
-    name: fakeUser.name,
-    age: Number(String(Math.random() * 100).split('.')[0]),
-    phone: fakeUser.phone,
+const generatePerson = () => {
+  return {
+    name: faker.fake('{{name.firstName}} {{name.lastName}}'),
+    phone: getRandom(1000000000, 9999999999),
+    age: getRandom(20, 70),
     country: faker.fake('{{address.county}}'),
     city: faker.fake('{{address.city}}'),
     street: faker.fake('{{address.streetName}}'),
-    apt: 'some apt',
+    apt: faker.fake('{{address.streetAddress}}'),
+    id: faker.random.uuid(),
+  };
+};
+
+
+for (let i = 1; i <= contactsQuantity; i++) {
+  const fakeCaller = generatePerson();
+  FAKE_CONTACTS.push({
+    ...fakeCaller,
   });
   for (let j = 1; j <= callsPerContact; j++) {
+    const fakeRecipient = generatePerson();
     FAKE_CALLS.push({
       started: faker.fake('{{date.future}}'),
       finished: faker.fake('{{date.past}}'),
       caller: {
-        name: fakeUser.name,
-        phone: fakeUser.phone,
-        id: String(j),
+        name: fakeCaller.name,
+        phone: fakeCaller.phone,
+        id: fakeCaller.id,
       },
       recipient: {
-        name: 'Timothy Dalton',
-        phone: Number(String(Math.random() * 10000000000).split('.')[0]),
-        id: String(i),
+        name: fakeRecipient.name,
+        phone: fakeRecipient.phone,
+        id: fakeRecipient.id,
       },
       id: String(j),
     });
@@ -53,29 +61,27 @@ const fakesRoutes = [
 
 
 export const isFake = (endpoint, method) => {
-  let ss;
-  fakesRoutes.forEach((f) => {
+  return fakesRoutes.some((f) => {
     const url = endpoint.split('/')[0];
     const routeMatched = f.url === url;
     const methodMatched = f.methods.includes(method);
 
-    ss = routeMatched && methodMatched;
+    return routeMatched && methodMatched;
   });
-  return ss;
 };
 
-export const getFakeResponse = (endpoint, method, body) =>{
+export const getFakeResponse = (endpoint, method, body) => {
   const url = endpoint.split('/')[0];
   const id = endpoint.split('/')[1];
   const response = {
     contacts: {
       get: FAKE_CONTACTS,
       delete: { id },
-      update: { ...body, id },
+      put: body,
       post: { ...body, id: faker.random.uuid() },
     },
     calls: {
-      get: FAKE_CONTACTS,
+      get: FAKE_CALLS.filter(c => c.caller.id === id || c.recipient.id === id),
     },
   };
 
