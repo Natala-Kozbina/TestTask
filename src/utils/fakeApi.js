@@ -38,9 +38,13 @@ for (let i = 1; i <= Math.floor(contactsQuantity / 2); i++) {
       started: faker.fake('{{date.future}}'),
       finished: faker.fake('{{date.past}}'),
       caller: {
+        name: fakeCaller.name,
+        phone: fakeCaller.phone,
         id: fakeCaller.id,
       },
       recipient: {
+        name: fakeRecipient.name,
+        phone: fakeRecipient.phone,
         id: fakeRecipient.id,
       },
       id: String(j),

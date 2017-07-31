@@ -1,3 +1,4 @@
+import omit from 'object.omit';
 import { ADD_MANY, ADD_ONE, SELECT, REMOVE, UPDATE } from './ContactsActions';
 
 const initialState = {
@@ -10,14 +11,17 @@ const ContactsReducer = (state = initialState, action) => {
     case ADD_MANY: {
       return {
         ...state,
-        data: action.payload,
+        data: action.payload.reduce((data, contact) => ({ ...data, [contact.id]: contact }), state.data),
       };
     }
 
     case ADD_ONE: {
       return {
         ...state,
-        data: state.data.concat(action.payload),
+        data: {
+          ...state.data,
+          [action.payload.id]: action.payload,
+        },
       };
     }
 
@@ -31,14 +35,17 @@ const ContactsReducer = (state = initialState, action) => {
     case UPDATE: {
       return {
         ...state,
-        data: state.data.map(c => (c.id === action.payload.id ? action.payload : c)),
+        data: {
+          ...state.data,
+          [action.payload.id]: action.payload,
+        },
       };
     }
 
     case REMOVE: {
       return {
         ...state,
-        data: state.data.filter(c => c.id !== action.payload),
+        data: omit(state.data, action.payload),
         selectedId: null,
       };
     }
@@ -49,9 +56,9 @@ const ContactsReducer = (state = initialState, action) => {
   }
 };
 
-export const getContacts = state => state.contacts.data;
+export const getContacts = state => Object.keys(state.contacts.data).map(key => state.contacts.data[key]);
 export const getSelectedContactId = state => state.contacts.selectedId;
-export const getContactById = (state, id) => state.contacts.data.filter(c => c.id === id)[0];
-export const getSelectedContact = state => state.contacts.data.filter(c => c.id === state.contacts.selectedId)[0];
+export const getContactById = (state, id) => state.contacts.data[id];
+export const getSelectedContact = state => state.contacts.data[state.contacts.selectedId];
 
 export default ContactsReducer;

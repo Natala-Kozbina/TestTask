@@ -1,5 +1,5 @@
 import { ADD_MANY } from './CallsActions';
-import { getContactById } from '../Contacts/ContactsReducer';
+import { getContactById, getSelectedContactId } from '../Contacts/ContactsReducer';
 
 const initialState = {
   data: {},
@@ -12,7 +12,7 @@ const CallsReducer = (state = initialState, action) => {
         ...state,
         data: {
           ...state.data,
-          [action.id]: action.payload,
+          [action.id]: action.payload.reduce((data, call) => ({ ...data, [call.id]: call }), state.data[action.id]),
         },
       };
     }
@@ -24,10 +24,14 @@ const CallsReducer = (state = initialState, action) => {
 };
 
 export const getRelatedCallsHistory = (state) => {
-  const { selectedId } = state.contacts;
-  return (state.calls.data[selectedId] && state.calls.data[selectedId].map((call) => {
-    const caller = getContactById(state, call.caller.id);
-    const recipient = getContactById(state, call.recipient.id);
+  const selectedId = getSelectedContactId(state);
+  const isNotEmpty = state.calls.data[selectedId];
+  const calls = isNotEmpty && Object.keys(state.calls.data[selectedId])
+      .map(key => state.calls.data[selectedId][key]);
+
+  return (calls && calls.map((call) => {
+    const caller = getContactById(state, call.caller.id) || call.caller;
+    const recipient = getContactById(state, call.recipient.id) || call.recipient;
 
     return {
       id: call.id,
