@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ListItem from '../../../../Components/List/ListItem';
-import Controls from '../../../../Components/Controls/Controls';
+import ListItem from '../../../Components/List/ListItem';
+import Controls from '../../../Components/Controls/Controls';
 
 const Contact = (props) => {
   const {

@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
 import Paginator from 'react-redux-paginator';
 
-import AddButton from '../../../Components/Buttons/GenericButton';
+import AddButton from '../../Components/Buttons/GenericButton';
 import Contact from './Components/Contact';
-import ContentHeader from '../../../Components/Content/ContentHeader';
-import List from '../../../Components/List/List';
+import ContentHeader from '../../Components/Content/ContentHeader';
+import List from '../../Components/List/List';
 
 import { selectContact, fetchContacts, deleteContact } from './ContactsActions';
 import { getContacts, getSelectedContactId } from './ContactsReducer';

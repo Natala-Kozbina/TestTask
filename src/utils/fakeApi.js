@@ -1,6 +1,6 @@
 import faker from 'faker';
 
-const contactsQuantity = 15;
+const contactsQuantity = 14; // should be even
 const callsPerContact = 20;
 const FAKE_CONTACTS = [];
 const FAKE_CALLS = [];
@@ -23,24 +23,24 @@ const generatePerson = () => {
 };
 
 
-for (let i = 1; i <= contactsQuantity; i++) {
+for (let i = 1; i <= Math.floor(contactsQuantity / 2); i++) {
   const fakeCaller = generatePerson();
   FAKE_CONTACTS.push({
     ...fakeCaller,
   });
+  const fakeRecipient = generatePerson();
+  FAKE_CONTACTS.push({
+    ...fakeRecipient,
+  });
+
   for (let j = 1; j <= callsPerContact; j++) {
-    const fakeRecipient = generatePerson();
     FAKE_CALLS.push({
       started: faker.fake('{{date.future}}'),
       finished: faker.fake('{{date.past}}'),
       caller: {
-        name: fakeCaller.name,
-        phone: fakeCaller.phone,
         id: fakeCaller.id,
       },
       recipient: {
-        name: fakeRecipient.name,
-        phone: fakeRecipient.phone,
         id: fakeRecipient.id,
       },
       id: String(j),

@@ -1,6 +1,6 @@
 import { push } from 'react-router-redux';
-import callApi from '../../../utils/apiCaller';
-import { FAKE_CONTACTS } from '../../../utils/fakeApi';
+import callApi from '../../utils/apiCaller';
+import { FAKE_CONTACTS } from '../../utils/fakeApi';
 
 export const ADD_MANY = 'CONTACTS/ADD_MANY';
 export const ADD_ONE = 'CONTACTS/ADD_ONE';

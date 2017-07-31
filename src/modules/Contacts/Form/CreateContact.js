@@ -11,7 +11,7 @@ import CloseButton from '../../../Components/Buttons/CloseButton';
 import Form from './Styled/Form';
 import Header from './Styled/Header';
 
-import { createContact } from '../Contacts/ContactsActions';
+import { createContact } from '../ContactsActions';
 import validate from './validation';
 
 

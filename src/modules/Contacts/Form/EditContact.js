@@ -11,8 +11,8 @@ import CloseButton from '../../../Components/Buttons/CloseButton';
 import Form from './Styled/Form';
 import Header from './Styled/Header';
 
-import { createContact, editContact } from '../Contacts/ContactsActions';
-import { getContactById } from '../Contacts/ContactsReducer';
+import { createContact, editContact } from '../ContactsActions';
+import { getContactById } from '../ContactsReducer';
 import validate from './validation';
 
 const mapStateToProps = (state, { params: { contactId } }) => {

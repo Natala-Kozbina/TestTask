@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Styled from 'styled-components';
-import Contacts from '../../modules/Contacts/Contacts/Contacts';
+import Contacts from '../Contacts/Contacts';
 import Calls from '../../modules/Calls/Calls';
 
 const MainPage = ({ className, children }) => (

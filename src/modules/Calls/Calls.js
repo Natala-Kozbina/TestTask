@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Paginator from 'react-redux-paginator';
-import CallHistory from './Components/Call';
+import Call from './Components/Call';
 
 import ContentHeader from '../../Components/Content/ContentHeader';
 import List from '../../Components/List/List';
@@ -10,7 +10,7 @@ import GenericButton from '../../Components/Buttons/GenericButton';
 
 import { fetchCallsHistory } from './CallsActions';
 import { getRelatedCallsHistory } from './CallsReducer';
-import { getSelectedContact, getSelectedContactId } from '../Contacts/Contacts/ContactsReducer';
+import { getSelectedContact, getSelectedContactId } from '../Contacts/ContactsReducer';
 
 const mapStateToProps = state => ({
   paginatorItems: getRelatedCallsHistory(state, getSelectedContactId(state)),
@@ -86,7 +86,7 @@ class Calls extends Component {
         {calls.length ?
           <List paginator={paginator}>
             {calls.map(c => (
-              <CallHistory
+              <Call
                 title={title}
                 key={c.id}
                 {...c}
