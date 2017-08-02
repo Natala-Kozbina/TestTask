@@ -1,34 +1,28 @@
 import { push } from 'react-router-redux';
 
-export const ADD_MANY = 'CONTACTS/ADD_MANY';
-export const ADD_ONE = 'CONTACTS/ADD_ONE';
-export const SELECT = 'CONTACTS/SELECT';
-export const REMOVE = 'CONTACTS/REMOVE';
-export const UPDATE = 'CONTACTS/UPDATE';
+export const ADD_CONTACTS = 'CONTACTS/ADD_MANY';
+export const ADD_ONE_CONTACT = 'CONTACTS/ADD_ONE_CONTACT';
+export const REMOVE_CONTACT = 'CONTACTS/REMOVE_CONTACT';
+export const UPDATE_CONTACT = 'CONTACTS/UPDATE_CONTACT';
 
 
 const addContacts = payload => ({
-  type: ADD_MANY,
+  type: ADD_CONTACTS,
   payload,
 });
 
 const addContact = payload => ({
-  type: ADD_ONE,
+  type: ADD_ONE_CONTACT,
   payload,
 });
 
 const updateContact = payload => ({
-  type: UPDATE,
-  payload,
-});
-
-export const selectContact = payload => ({
-  type: SELECT,
+  type: UPDATE_CONTACT,
   payload,
 });
 
 export const removeContact = payload => ({
-  type: REMOVE,
+  type: REMOVE_CONTACT,
   payload,
 });
 
@@ -64,3 +58,19 @@ export const deleteContact = (id) => {
   };
 };
 
+
+export const ADD_CALLS = 'CALLS/ADD_MANY';
+
+const addCalls = payload => ({
+  type: ADD_CALLS,
+  payload: payload.response,
+  id: payload.id,
+});
+
+export const fetchCallsHistory = (id) => {
+  return (dispatch, state, api) => {
+    return api(`calls/${id}`, 'get')
+      .then(response => dispatch(addCalls({ response, id })))
+      .catch(() => dispatch(push('/error')));
+  };
+};

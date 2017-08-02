@@ -47,7 +47,7 @@ for (let i = 1; i <= Math.floor(contactsQuantity / 2); i++) {
         phone: fakeRecipient.phone,
         id: fakeRecipient.id,
       },
-      id: String(j),
+      id: faker.random.uuid(),
     });
   }
 }

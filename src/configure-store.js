@@ -4,11 +4,12 @@ import { browserHistory } from 'react-router';
 import thunk from 'redux-thunk';
 import DevTools from './dev-tools';
 import reducers from './reducers';
+import callApi from './utils/apiCaller';
 
 const middleware = routerMiddleware(browserHistory);
 
 const enhancers = [
-  applyMiddleware(thunk, middleware),
+  applyMiddleware(thunk.withExtraArgument(callApi), middleware),
   DevTools.instrument(),
 ];
 
