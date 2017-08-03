@@ -45,6 +45,7 @@ function normalizeCalls(total, c) {
 }
 
 const EntitiesReducer = (state = initialState, action) => {
+  window.state = state;
   switch (action.type) {
     case ADD_CALLS: {
       const { contacts, calls } = R.reduce(normalizeCalls, baseStructure, action.payload);
@@ -52,11 +53,6 @@ const EntitiesReducer = (state = initialState, action) => {
         ...state,
         contacts,
         calls,
-        contactCalls: {
-          [action.id]: {
-            ...R.map((item) => { return { ...item, caller: item.caller.id, recipient: item.recipient.id }; }, action.payload),
-          },
-        },
       };
     }
 
@@ -101,33 +97,27 @@ const EntitiesReducer = (state = initialState, action) => {
     }
   }
 };
-// //
-// export const getRelatedCallsHistory = (state) => {
-//     const selectedContactId = '2';
-//     const related = state.calls.reduce((total, r) => {
-//       if (r.caller.id === selectedContactId) {
-//         return total.concat({
-//           ...r,
-//           caller: r.caller,
-//           reciepient:
-//         })
-//       }
-//     },[])
-//
-//     return {
-//       id: call.id,
-//       started: call.started,
-//       finished: call.finished,
-//       recipient: {
-//         name: recipient.name,
-//         phone: recipient.phone,
-//       },
-//       caller: {
-//         name: caller.name,
-//         phone: caller.phone,
-//       },
-//     };
-// };
+
+export const getRelatedCallsHistory = (state, id) => {
+  const transform = (total, item) => {
+    const isMatched = R.or(R.equals(item.caller, id), R.equals(item.recipient, id));
+
+    if (isMatched) {
+      const caller = R.pick(['name', 'phone'], R.path([item.caller], state.contacts.byId));
+      const recipient = R.pick(['name', 'phone'], R.path([item.recipient], state.contacts.byId));
+
+      return total.concat({ ...item, caller, recipient });
+    }
+
+    return total;
+  };
+
+  return R.pipe(
+    R.values,
+    R.reduce(transform, []),
+  )(state.calls.byId);
+};
+
+window.getRelatedCallsHistory = getRelatedCallsHistory;
 
 export default EntitiesReducer;
-
