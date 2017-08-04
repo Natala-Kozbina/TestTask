@@ -11,8 +11,8 @@ import CloseButton from '../../../Components/Buttons/CloseButton';
 import Form from './Styled/Form';
 import Header from './Styled/Header';
 
-import { createContact, editContact } from '../ContactsActions';
-import { getContactById } from '../ContactsReducer';
+import { editContact } from '../../../Entities/EntitiesActions';
+import { getContactById } from '../../../Entities/EntitiesReducer';
 import validate from './validation';
 
 const mapStateToProps = (state, { params: { contactId } }) => {
@@ -22,7 +22,6 @@ const mapStateToProps = (state, { params: { contactId } }) => {
 };
 
 const mapDispatchToProps = {
-  create: payload => createContact(payload),
   edit: payload => editContact(payload),
   closeForm: () => push('/'),
   initializeForm: data => initialize('editContact', data),

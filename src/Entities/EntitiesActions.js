@@ -4,7 +4,7 @@ export const ADD_CONTACTS = 'CONTACTS/ADD_MANY';
 export const ADD_ONE_CONTACT = 'CONTACTS/ADD_ONE_CONTACT';
 export const REMOVE_CONTACT = 'CONTACTS/REMOVE_CONTACT';
 export const UPDATE_CONTACT = 'CONTACTS/UPDATE_CONTACT';
-
+export const ADD_CALLS = 'CALLS/ADD_MANY';
 
 const addContacts = payload => ({
   type: ADD_CONTACTS,
@@ -23,6 +23,11 @@ const updateContact = payload => ({
 
 export const removeContact = payload => ({
   type: REMOVE_CONTACT,
+  payload,
+});
+
+const addCalls = payload => ({
+  type: ADD_CALLS,
   payload,
 });
 
@@ -58,19 +63,10 @@ export const deleteContact = (id) => {
   };
 };
 
-
-export const ADD_CALLS = 'CALLS/ADD_MANY';
-
-const addCalls = payload => ({
-  type: ADD_CALLS,
-  payload: payload.response,
-  id: payload.id,
-});
-
 export const fetchCallsHistory = (id) => {
   return (dispatch, state, api) => {
     return api(`calls/${id}`, 'get')
-      .then(response => dispatch(addCalls({ response, id })))
+      .then(response => dispatch(addCalls(response)))
       .catch(() => dispatch(push('/error')));
   };
 };

@@ -3,8 +3,14 @@ import { ADD_CONTACTS, ADD_ONE_CONTACT, ADD_CALLS, REMOVE_CONTACT, UPDATE_CONTAC
 
 window.R = R;
 const initialState = {
-  contacts: {},
-  calls: {},
+  contacts: {
+    byId: {},
+    ids: [],
+  },
+  calls: {
+    byId: {},
+    ids: [],
+  },
 };
 
 const baseStructure = {
@@ -44,6 +50,16 @@ function normalizeCalls(total, c) {
   };
 }
 
+function normalizeContacts(total, c) {
+  return {
+    byId: {
+      ...total.byId,
+      [c.id]: { ...c, loaded: true },
+    },
+    ids: total.ids.concat(c.id),
+  };
+}
+
 const EntitiesReducer = (state = initialState, action) => {
   window.state = state;
   switch (action.type) {
@@ -51,44 +67,72 @@ const EntitiesReducer = (state = initialState, action) => {
       const { contacts, calls } = R.reduce(normalizeCalls, baseStructure, action.payload);
       return {
         ...state,
-        contacts,
-        calls,
+        contacts: {
+          byId: {
+            ...state.contacts.byId,
+            ...contacts.byId,
+          },
+          ids: [...state.contacts.ids, ...contacts.ids],
+        },
+        calls: {
+          byId: {
+            ...state.calls.byId,
+            ...calls.byId,
+          },
+          ids: [...state.calls.ids, ...calls.ids],
+        },
       };
     }
 
     case ADD_CONTACTS: {
-      // const { contacts } = R.reduce(normalizeContacts, baseStructure, action.payload);
+      const contacts = R.reduce(normalizeContacts, { byId: {}, ids: [] }, action.payload);
       return {
         ...state,
-        // contacts,
+        contacts: {
+          byId: {
+            ...state.contacts.byId,
+            ...contacts.byId,
+          },
+          ids: [...state.contacts.ids, ...contacts.ids],
+        },
       };
     }
 
     case ADD_ONE_CONTACT: {
+      const { id } = action.payload;
       return {
         ...state,
-        data: {
-          ...state.data,
-          [action.payload.id]: action.payload,
+        contacts: {
+          byId: {
+            ...state.contacts.byId,
+            [id]: action.payload,
+          },
+          ids: state.contacts.ids.concat(id),
         },
       };
     }
 
     case UPDATE_CONTACT: {
+      const { id } = action.payload;
       return {
         ...state,
-        data: {
-          ...state.data,
-          [action.payload.id]: action.payload,
+        contacts: {
+          byId: {
+            ...state.contacts.byId,
+            [id]: action.payload,
+          },
         },
       };
     }
 
     case REMOVE_CONTACT: {
+      const id = action.payload;
       return {
         ...state,
-        data: R.omit(action.payload, state.data),
-        selectedId: null,
+        contacts: {
+          ...state.contacts,
+          [id]: { ...state.contacts[id], deleted: true },
+        },
       };
     }
 
@@ -98,13 +142,13 @@ const EntitiesReducer = (state = initialState, action) => {
   }
 };
 
-export const getRelatedCallsHistory = (state, id) => {
+export const getCallsByContactId = (state, id) => {
   const transform = (total, item) => {
     const isMatched = R.or(R.equals(item.caller, id), R.equals(item.recipient, id));
 
     if (isMatched) {
-      const caller = R.pick(['name', 'phone'], R.path([item.caller], state.contacts.byId));
-      const recipient = R.pick(['name', 'phone'], R.path([item.recipient], state.contacts.byId));
+      const caller = R.pick(['name', 'phone'], R.path([item.caller], state.entities.contacts.byId));
+      const recipient = R.pick(['name', 'phone'], R.path([item.recipient], state.entities.contacts.byId));
 
       return total.concat({ ...item, caller, recipient });
     }
@@ -115,9 +159,10 @@ export const getRelatedCallsHistory = (state, id) => {
   return R.pipe(
     R.values,
     R.reduce(transform, []),
-  )(state.calls.byId);
+  )(state.entities.calls.byId);
 };
 
-window.getRelatedCallsHistory = getRelatedCallsHistory;
+export const getContacts = state => R.filter(item => item.loaded && !item.deleted, R.values(state.entities.contacts.byId));
+export const getContactById = (state, id) => R.pick([id], state.entities.contacts.byId);
 
 export default EntitiesReducer;
