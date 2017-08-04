@@ -72,14 +72,14 @@ const EntitiesReducer = (state = initialState, action) => {
             ...state.contacts.byId,
             ...contacts.byId,
           },
-          ids: [...state.contacts.ids, ...contacts.ids],
+          ids: R.uniq([...state.contacts.ids, ...contacts.ids]),
         },
         calls: {
           byId: {
             ...state.calls.byId,
             ...calls.byId,
           },
-          ids: [...state.calls.ids, ...calls.ids],
+          ids: R.uniq([...state.calls.ids, ...calls.ids]),
         },
       };
     }
@@ -93,7 +93,7 @@ const EntitiesReducer = (state = initialState, action) => {
             ...state.contacts.byId,
             ...contacts.byId,
           },
-          ids: [...state.contacts.ids, ...contacts.ids],
+          ids: R.uniq([...state.contacts.ids, ...contacts.ids]),
         },
       };
     }
